@@ -25,6 +25,39 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+  
+  
+  
+  var SerialPort = require('serialport').SerialPort;
+  
+  
+  var serialPort = require('serialport');
+  serialPort.list(function (err, ports) {
+    ports.forEach(function(port) {
+      console.log(port.comName);
+      console.log(port.pnpId);
+      console.log(port.manufacturer);
+    });
+  });
+  
+  
+  //var port = new SerialPort('/dev/tty.usbmodem1411');
+  var port = new SerialPort('/dev/cu.usbmodem1411');
+
+  port.on('open', function () {
+  port.write('main screen turn on', function(err, bytesWritten) {
+    if (err) {
+      return console.log('Error: ', err.message);
+    }
+    console.log(bytesWritten, 'bytes written');
+  });
+  });
+
+  port.on('data', function(data) { /* do anything */
+    console.log(data);  
+   });
+  
+  
 }
 
 // This method will be called when Electron has finished
